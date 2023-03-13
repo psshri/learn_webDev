@@ -24,6 +24,10 @@ function main(ctime) {
     gameEngine();
 }
 
+function isCollide(sarr){
+    return false;
+}
+
 function gameEngine(){
     // Part1: Updating the snake array and food
     if(isCollide(snakeArr)){
@@ -35,6 +39,16 @@ function gameEngine(){
         musicSound.play();
         score = 0;
     }
+
+    // If the food is eaten, increment the score and regenerate the food
+    if(snakeArr[0].x === food.x && snakeArr[0].y === food.y){
+        snakeArr.unshift({x: snakeArr[0].x + inputDir.x, y: snakeArr[0].y + inputDir.y});
+        let a = 2;
+        let b = 16;
+        food = {x: Math.round(a + (b-a)*Math.random()), y: Math.round(a + (b-a)*Math.random())};
+    }
+
+
     // Part2: Display the snake and food
     
     // Display the snake
