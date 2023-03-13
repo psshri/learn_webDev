@@ -1,20 +1,22 @@
 // Game Constants and Variables
-let direction = {x: 0, y: 0};
-const foodSound = new Audio('../music/food.mp3');
-const gameOverSound = new Audio('../music/gameover.mp3');
-const moveSound = new Audio('../music/move.mp3');
-const musicSound = new Audio('../music/music.mp3');
+let inputDir = {x: 0, y: 0};
+const foodSound = new Audio('music/food.mp3');
+const gameOverSound = new Audio('music/gameover.mp3');
+const moveSound = new Audio('music/move.mp3');
+const musicSound = new Audio('music/music.mp3');
 let speed = 2;
+let score = 0;
 let lastPaintTime = 0;
 let snakeArr = [
     {x: 13, y: 15}
 ]
 food = {x: 6, y: 7};
 
+
 //Game Functions
 function main(ctime) {
     window.requestAnimationFrame(main);
-    console.log(ctime);
+    // console.log(ctime);
     if((ctime-lastPaintTime)/1000 < 1/speed){
         return;
     }
@@ -24,6 +26,15 @@ function main(ctime) {
 
 function gameEngine(){
     // Part1: Updating the snake array and food
+    if(isCollide(snakeArr)){
+        gameOverSound.play();
+        musicSound.pause();
+        inputDir = {x: 0, y: 0};
+        alert("Game over. Press any key to play again!");
+        snakeArr = [{x: 13, y: 15}];
+        musicSound.play();
+        score = 0;
+    }
     // Part2: Display the snake and food
     
     // Display the snake
@@ -52,3 +63,31 @@ function gameEngine(){
 
 // Main logic starts here
 window.requestAnimationFrame(main);
+window.addEventListener('keydown', e =>{
+    inputDir = {x: 0, y: 1}
+    moveSound.play();
+    switch (e.key) {
+        case "ArrowUp":
+            console.log("ArrowUp")
+            inputDir.x = 0;
+            inputDir.y = -1;
+            break;
+        case "ArrowDown":
+            console.log("ArrowDown")
+            inputDir.x = 0;
+            inputDir.y = 1;
+            break;
+        case "ArrowLeft":
+            console.log("ArrowLeft")
+            inputDir.x = -1;
+            inputDir.y = 0;
+            break;
+        case "ArrowRight":
+            console.log("ArrowRight")
+            inputDir.x = 1;
+            inputDir.y = 0;
+            break;
+        default:
+            break;
+    }
+});
