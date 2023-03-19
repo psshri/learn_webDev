@@ -24,11 +24,21 @@ function main(ctime) {
     gameEngine();
 }
 
-function isCollide(sarr){
-    return false;
+function isCollide(snake){
+    // if snake bumps into itself
+    for(let i=1; i<snakeArr.length; i++){
+        if(snake[i].x === snake[0].x && snake[i].y === snake[0].y){
+            return true;
+        }
+    }
+    // if you bump into the wall
+    if(snake[0].x >= 18 || snake[0].x <= 0 || snake[0].y >= 18 || snake[0].y <= 0){
+        return true;
+    }
 }
 
 function gameEngine(){
+    musicSound.play();
     // Part1: Updating the snake array and food
     if(isCollide(snakeArr)){
         gameOverSound.play();
@@ -36,7 +46,7 @@ function gameEngine(){
         inputDir = {x: 0, y: 0};
         alert("Game over. Press any key to play again!");
         snakeArr = [{x: 13, y: 15}];
-        musicSound.play();
+        // musicSound.play();
         score = 0;
     }
 

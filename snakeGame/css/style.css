@@ -29,6 +29,8 @@
 
 .snake{
     background-color: purple;
+    border: 0.25vmin solid white;
+    border-radius: 12px; 
 }
 
 .food{
