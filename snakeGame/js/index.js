@@ -38,6 +38,7 @@ function isCollide(snake) {
 }
 
 function gameEngine() {
+    musicSound.play();
     // Part1: Updating the snake array and food
     if (isCollide(snakeArr)) {
         gameOverSound.play();
