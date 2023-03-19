@@ -34,6 +34,7 @@
 }
 
 .food{
-    background-color: yellow;
-
+    background: linear-gradient(red, purple);
+    border: 0.25vmin solid black;
+    border-radius: 8px;
 }
