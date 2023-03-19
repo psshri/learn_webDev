@@ -15,10 +15,19 @@
     align-items: center;
 }
 
-#scoreBox{
+#highScoreBox{
     position: absolute;
     top: 9px;
-    right: 200px;
+    right: 100px;
+    font-size: 39px;
+    font-weight: bold;
+    font-family: 'New Tegomin', serif;
+}
+
+#scoreBox{
+    position: absolute;
+    top: 50px;
+    right: 220px;
     font-size: 39px;
     font-weight: bold;
     font-family: 'New Tegomin', serif;

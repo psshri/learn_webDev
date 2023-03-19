@@ -1,93 +1,97 @@
 // Game Constants and Variables
-let inputDir = {x: 0, y: 0};
+let inputDir = { x: 0, y: 0 };
 const foodSound = new Audio('music/food.mp3');
 const gameOverSound = new Audio('music/gameover.mp3');
 const moveSound = new Audio('music/move.mp3');
 const musicSound = new Audio('music/music.mp3');
 let speed = 19;
-let score = 0; 
+let score = 0;
 let lastPaintTime = 0;
 let snakeArr = [
-    {x: 13, y: 15}
+    { x: 13, y: 15 }
 ]
-food = {x: 6, y: 7};
+food = { x: 6, y: 7 };
 
 
 //Game Functions
 function main(ctime) {
     window.requestAnimationFrame(main);
     // console.log(ctime);
-    if((ctime-lastPaintTime)/1000 < 1/speed){
+    if ((ctime - lastPaintTime) / 1000 < 1 / speed) {
         return;
     }
     lastPaintTime = ctime;
     gameEngine();
 }
 
-function isCollide(snake){
+function isCollide(snake) {
     // if snake bumps into itself
-    for(let i=1; i<snakeArr.length; i++){
-        if(snake[i].x === snake[0].x && snake[i].y === snake[0].y){
+    for (let i = 1; i < snakeArr.length; i++) {
+        if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) {
             return true;
         }
     }
     // if you bump into the wall
-    if(snake[0].x >= 18 || snake[0].x <= 0 || snake[0].y >= 18 || snake[0].y <= 0){
+    if (snake[0].x >= 18 || snake[0].x <= 0 || snake[0].y >= 18 || snake[0].y <= 0) {
         return true;
     }
 }
 
-function gameEngine(){
-    // musicSound.play();
+function gameEngine() {
     // Part1: Updating the snake array and food
-    if(isCollide(snakeArr)){
+    if (isCollide(snakeArr)) {
         gameOverSound.play();
         musicSound.pause();
-        inputDir = {x: 0, y: 0};
+        inputDir = { x: 0, y: 0 };
         alert("Game over. Press any key to play again!");
-        snakeArr = [{x: 13, y: 15}];
-        // musicSound.play();
+        snakeArr = [{ x: 13, y: 15 }];
+        musicSound.play();
         score = 0;
     }
 
     // If the food is eaten, increment the score and regenerate the food
-    if(snakeArr[0].x === food.x && snakeArr[0].y === food.y){
+    if (snakeArr[0].x === food.x && snakeArr[0].y === food.y) {
         foodSound.play();
         score += 1;
-        scoreBox.innerHTML = 'Score: ' + score; 
-        snakeArr.unshift({x: snakeArr[0].x + inputDir.x, y: snakeArr[0].y + inputDir.y});
+        if (score > hiScoreVal) {
+            hiScoreVal = score;
+            localStorage.setItem("hiScore", JSON.stringify(hiScoreVal));
+            highScoreBox.innerHTML = "High Score: " + hiScoreVal;
+        }
+        scoreBox.innerHTML = 'Score: ' + score;
+        snakeArr.unshift({ x: snakeArr[0].x + inputDir.x, y: snakeArr[0].y + inputDir.y });
         let a = 2;
         let b = 16;
-        food = {x: Math.round(a + (b-a)*Math.random()), y: Math.round(a + (b-a)*Math.random())};
+        food = { x: Math.round(a + (b - a) * Math.random()), y: Math.round(a + (b - a) * Math.random()) };
     }
 
     // Moving the snake
-    for(let i=snakeArr.length-2; i>=0; i--){
+    for (let i = snakeArr.length - 2; i >= 0; i--) {
         // const element = array[i]
-        snakeArr[i+1] = {...snakeArr[i]};
+        snakeArr[i + 1] = { ...snakeArr[i] };
     }
 
     snakeArr[0].x += inputDir.x;
-    snakeArr[0].y += inputDir.y; 
+    snakeArr[0].y += inputDir.y;
 
 
     // Part2: Display the snake and food
-    
+
     // Display the snake
     board.innerHTML = "";
-    snakeArr.forEach((e, index)=>{
+    snakeArr.forEach((e, index) => {
         snakeElement = document.createElement('div');
         snakeElement.style.gridRowStart = e.y;
         snakeElement.style.gridColumnStart = e.x;
-        if(index === 0){
+        if (index === 0) {
             snakeElement.classList.add('head');
         }
-        else{
+        else {
             snakeElement.classList.add('snake');
         }
         board.appendChild(snakeElement);
     });
-    
+
     // Display the food
     foodElement = document.createElement('div');
     foodElement.style.gridRowStart = food.y;
@@ -98,10 +102,20 @@ function gameEngine(){
 
 
 // Main logic starts here
-let hiScore = localStorage.getItem("hiScore"); 
+musicSound.play();
+let hiScore = localStorage.getItem("hiScore");
+if (hiScore === null) {
+    hiScoreVal = 0;
+    localStorage.setItem("hiScore", JSON.stringify(hiScoreVal));
+}
+else {
+    hiScoreVal = JSON.parse(hiScore);
+    highScoreBox.innerHTML = "High Score: " + hiScoreVal;
+}
+
 window.requestAnimationFrame(main);
-window.addEventListener('keydown', e =>{
-    inputDir = {x: 0, y: 1}
+window.addEventListener('keydown', e => {
+    inputDir = { x: 0, y: 1 }
     moveSound.play();
     switch (e.key) {
         case "ArrowUp":
