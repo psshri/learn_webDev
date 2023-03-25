@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snake-game-deployment
+  labels:
+    app: snakeGame
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: snakeGame
+  template:
+    metadata:
+      labels:
+        app: snakeGame
+    spec:
+      containers:
+      - name: snake-game-container
+        image: psshri/webdev:snakeGameV1.0
+        ports: 
+        - containerPort: 80
